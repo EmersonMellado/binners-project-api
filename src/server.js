@@ -23,7 +23,6 @@ var server_host = environment.server.host || '0.0.0.0';
 console.log("server_port", server_port);
 console.log("server_host", server_host);
 server.connection({
-    host: server_host,
     port: server_port,
     routes: {
         cors: true
