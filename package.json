@@ -42,9 +42,7 @@
     "nodemailer": "1.4.0",
     "oauth": "0.9.14",
     "underscore": "1.8.3",
-    "underscore.string": "3.0.3"
-  },
-  "devDependencies": {
+    "underscore.string": "3.0.3",
     "nodemon": "1.9.1"
   }
 }
