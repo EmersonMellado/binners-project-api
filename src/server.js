@@ -56,6 +56,8 @@ server.register(plugins.concat(routes), function (err) {
  * Listening start event
  */
 server.on('start', function () {
+    var array = server.info.id.split(':')
+    console.log("array", array[0]);
     inspect('[ start ] SoundBitz server started at: ' + server.info.uri);
     db();
 });
