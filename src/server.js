@@ -20,9 +20,13 @@ var Hapi = require('hapi'),
  */
 var server_port = ~~process.env.PORT || environment.server.port;
 var server_host = environment.server.host || '0.0.0.0';
+
 console.log("server_port", server_port);
-console.log("server_host", server_host);
+console.log("server_port", server_port);
+console.log("HEROKU-HOST", process.env.HOST);
+
 server.connection({
+    host: server_host,
     port: server_port,
     routes: {
         cors: true
