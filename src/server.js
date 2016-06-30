@@ -6,7 +6,7 @@
  * @author Samuel Castro
  * @since 1/14/2016
  */
- 
+
 var Hapi = require('hapi'),
     environment = require('./environment/environment.js'),
     plugins = require('./plugins'),
@@ -20,7 +20,7 @@ var Hapi = require('hapi'),
  */
 server.connection({
     host: environment.server.host,
-    port: environment.server.port,
+    port: process.env.PORT || environment.server.port,
     routes: {
         cors: true
     }
