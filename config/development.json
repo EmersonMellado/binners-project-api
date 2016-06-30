@@ -2,7 +2,7 @@
   "SERVER": {
     "API_VERSION": "v1.0",
     "HOST": "localhost",
-    "PORT": 3000,
+    "PORT": 4000,
     "UPLOAD_FOLDER": "../uploads"
   },
   "DATABASE": {
