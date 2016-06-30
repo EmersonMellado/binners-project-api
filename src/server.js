@@ -26,7 +26,7 @@ console.log("server_port", server_port);
 console.log("HEROKU-HOST", process.env.HOST);
 
 server.connection({
-    host: server_host,
+    //host: server_host,
     port: server_port,
     routes: {
         cors: true
