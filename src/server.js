@@ -6,6 +6,7 @@
  * @author Samuel Castro
  * @since 1/14/2016
  */
+ 
 var Hapi = require('hapi'),
     environment = require('./environment/environment.js'),
     plugins = require('./plugins'),
