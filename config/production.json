@@ -1,7 +1,7 @@
 {
   "SERVER": {
     "API_VERSION": "v1.0",
-    "HOST": "auto",
+    "HOST": "binners.herokuapp.com",
     "PORT": "auto",
     "UPLOAD_FOLDER": "../uploads"
   },
