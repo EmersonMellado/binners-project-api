@@ -36,6 +36,7 @@ var apiDocOptions = {
  * @param next
  */
 exports.register = function(server, options, next){
+	console.log("server",server.info);
 	server.register({
 		register: require('hapi-swagger'),
 		options: apiDocOptions

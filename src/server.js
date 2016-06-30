@@ -19,13 +19,19 @@ var Hapi = require('hapi'),
  * Creating a server connection passing host/port.
  */
 var server_port = ~~process.env.PORT || environment.server.port;
-var server_host = server.info.uri || environment.server.host || '0.0.0.0';
+var server_host = environment.server.host || '0.0.0.0';
 
 console.log("server_port", server_port);
 console.log("server_port", server_port);
 console.log("HEROKU-HOST", process.env.HOST);
 
-
+server.connection({
+    host: server_host,
+    port: server_port,
+    routes: {
+        cors: true
+    }
+});
 
 /**
  * Setup template views with handlebar, used to show the api documentation
@@ -52,14 +58,6 @@ server.register(plugins.concat(routes), function (err) {
 server.on('start', function () {
     inspect('[ start ] SoundBitz server started at: ' + server.info.uri);
     db();
-});
-
-server.connection({
-    host: server.info.uri,
-    port: server_port,
-    routes: {
-        cors: true
-    }
 });
 
 /**
