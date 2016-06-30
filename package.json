@@ -13,8 +13,8 @@
     "start_windows": "set NODE_ENV=development&&nodemon app.js"
   },
   "engines": {
-    "node": "4.2.4",
-    "npm": "2.14.12"
+    "node": "6.2.2",
+    "npm": "3.9.5"
   },
   "author": "Samuel Castro <samuelcastrosilva@gmail.com>",
   "license": "ISC",
