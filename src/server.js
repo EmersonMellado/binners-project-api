@@ -25,13 +25,7 @@ console.log("server_port", server_port);
 console.log("server_port", server_port);
 console.log("HEROKU-HOST", process.env.HOST);
 
-server.connection({
-    host: server.info.uri,
-    port: server_port,
-    routes: {
-        cors: true
-    }
-});
+
 
 /**
  * Setup template views with handlebar, used to show the api documentation
@@ -58,6 +52,14 @@ server.register(plugins.concat(routes), function (err) {
 server.on('start', function () {
     inspect('[ start ] SoundBitz server started at: ' + server.info.uri);
     db();
+});
+
+server.connection({
+    host: server.info.uri,
+    port: server_port,
+    routes: {
+        cors: true
+    }
 });
 
 /**
