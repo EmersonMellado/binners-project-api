@@ -9,11 +9,14 @@
 var Pack = require('../../package'),
 	inspect = require('eyes').inspector({styles: {all: 'magenta'}});
 
+var config = require('config');
+
 /**
  * Setup swagger options
  * @type {{apiVersion: *, authorizations: {default: {type: string, passAs: string, keyname: string}}, info: {title: *, description: *, contact: (blogpost.author|{type, ref}|*), license: *, licenseUrl: string}}}
  */
 var apiDocOptions = {
+	host: config.get('SERVER.HOST'), //Fix for heroku deploy
 	apiVersion: Pack.version,
 	authorizations: {
 		default: {

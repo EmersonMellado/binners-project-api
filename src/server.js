@@ -26,7 +26,7 @@ console.log("server_port", server_port);
 console.log("HEROKU-HOST", process.env.HOST);
 
 server.connection({
-    host: server_host,
+    //host: server_host,
     port: server_port,
     routes: {
         cors: true
@@ -57,7 +57,9 @@ server.register(plugins.concat(routes), function (err) {
  */
 server.on('start', function () {
     var serv = server.info.id.split(':');
-    console.log("array", serv);
+    console.log("server.info", server.info);
+    console.log("serv", serv[0]);
+    //server.info.uri = server.info.protocol + "://" + serv[0] + ":" + server.info.port;
     inspect('[ start ] SoundBitz server started at: ' + server.info.uri);
     db();
 });
