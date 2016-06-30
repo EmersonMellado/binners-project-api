@@ -2,7 +2,6 @@
   "SERVER": {
     "API_VERSION": "v1.0",
     "HOST": "binners.herokuapp.com",
-    "PORT": 3000,
     "UPLOAD_FOLDER": "../uploads"
   },
   "DATABASE": {
