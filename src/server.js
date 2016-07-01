@@ -18,7 +18,7 @@ var Hapi = require('hapi'),
  * Creating a server connection passing host/port.
  */
 server.connection({
-    host: environment.server.host,
+    //host: environment.server.host,
     port: environment.server.port,
     routes: {
         cors: true
