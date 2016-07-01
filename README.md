@@ -31,8 +31,8 @@ This section will show you some example of endpoint calls
 Let us know at samuelcastrosilva@gmail.com
 
 
-
-
-
-
-
+##Heroku Deploy
+  git add.
+  git commit -m "??"
+  git push heroku develop:master
+  heroku logs
