@@ -27,6 +27,7 @@
     <script type="text/javascript">
         $(function () {
             window.swaggerUi = new SwaggerUi({
+
                 url: window.location.protocol + '//' + window.location.host + '{{hapiSwagger.endpoint}}',
                 dom_id: "swagger-ui-container",
                 supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
@@ -39,6 +40,8 @@
             },
                 docExpansion: "list"
             });
+            console.log("window.location.host", window.location.host);
+            console.log("url", url);
             window.swaggerUi.load();
         });
     </script>
