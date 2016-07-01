@@ -6,7 +6,6 @@
  * @author Samuel Castro
  * @since 1/14/2016
  */
-
 var Hapi = require('hapi'),
     environment = require('./environment/environment.js'),
     plugins = require('./plugins'),
@@ -18,16 +17,9 @@ var Hapi = require('hapi'),
 /**
  * Creating a server connection passing host/port.
  */
-var server_port = ~~process.env.PORT || environment.server.port;
-var server_host = environment.server.host || '0.0.0.0';
-
-console.log("server_port", server_port);
-console.log("server_port", server_port);
-console.log("HEROKU-HOST", process.env.HOST);
-
 server.connection({
-    //host: server_host,
-    port: server_port,
+    host: environment.server.host,
+    port: environment.server.port,
     routes: {
         cors: true
     }
@@ -56,10 +48,6 @@ server.register(plugins.concat(routes), function (err) {
  * Listening start event
  */
 server.on('start', function () {
-    var serv = server.info.id.split(':');
-    console.log("server.info", server.info);
-    console.log("serv", serv[0]);
-    //server.info.uri = server.info.protocol + "://" + serv[0] + ":" + server.info.port;
     inspect('[ start ] SoundBitz server started at: ' + server.info.uri);
     db();
 });
