@@ -35,15 +35,14 @@
                     log("Loaded SwaggerUI")
                     $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
                 },
-                    onFailure: function(data) {
+                onFailure: function(data) {
                     log("Unable to Load SwaggerUI");
-            },
+                },
                 docExpansion: "list"
-            });
-            window.swaggerUi.api.setSchemes(['https']);
-            console.log("window.location.host", window.location.host);
+            });            
+            console.log("window.swaggerUi", window.swaggerUi);
             console.log("window.location.protocol", window.location.protocol);
-            window.swaggerUi.load();
+            window.swaggerUi.load();            
         });
     </script>
 
