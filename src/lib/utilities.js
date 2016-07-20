@@ -35,7 +35,11 @@ module.exports = {
 			INVALID_EMAIL_FORMAT: {
 				errorCode: '005',
 				message: 'Invalid email format.'
-			}
+			},
+			NAME_IS_REQUIRED: {
+				errorCode: '006',
+				message: 'User Name is required.'
+			},			
 		}
 	},
 

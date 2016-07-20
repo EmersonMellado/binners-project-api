@@ -102,6 +102,12 @@ AuthController.prototype = (function () {
                     reply(err);
                 }
 
+                if (!user.name) {
+                    var err = Boom.notFound('', errors.NAME_IS_REQUIRED);
+                    err.output.payload.details = err.data;
+                    reply(err);
+                }                
+
                 user.doHashReset(function (err, token) {
                     if (err)
                         return reply(Boom.unauthorized('User not found!'));
