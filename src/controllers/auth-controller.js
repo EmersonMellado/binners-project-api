@@ -140,7 +140,7 @@ AuthController.prototype = (function () {
 
                         smtpTransport.sendMail(mailOptions, function (err, response) {
                             console.log("============================================="); 
-                            console.log("smtpTransport:", error || response); 
+                            console.log("smtpTransport:", err || response); 
                             console.log("============================================="); 
                             if (err)
                                 return reply(Boom.badImplementation(err));
