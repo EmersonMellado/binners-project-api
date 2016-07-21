@@ -119,7 +119,19 @@ AuthController.prototype = (function () {
                         if (err)
                             return reply(Boom.badImplementation(err));
 
-                        
+                          var smtpConfig = {
+                            host: 'smtp.gmail.com',
+                            port: 465,
+                            secure: true, // use SSL, 
+                                          // you can try with TLS, but port is then 587
+                            auth: {
+                                user: config.get('MAIL.USER'),
+                                pass: config.get('MAIL.PASSWORD')
+                            }
+                          };
+
+                        var smtpTransport = nodemailer.createTransport(smtpConfig);
+                        /*
                         var smtpTransport = nodemailer.createTransport({
                             service: 'Gmail',
                             auth: {
@@ -127,7 +139,8 @@ AuthController.prototype = (function () {
                                 pass: config.get('MAIL.PASSWORD')
                             }
                         });
-
+                        */
+                    
                         var mailOptions = {
                             to: user.email,
                             from: config.get('MAIL.FROM'),
