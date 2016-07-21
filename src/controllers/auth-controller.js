@@ -137,7 +137,11 @@ AuthController.prototype = (function () {
                                     'http://' + request.headers.host + '/api/v1.0/auth/reset/' + token + '\n\n' +
                                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                         };
-                        smtpTransport.sendMail(mailOptions, function (err) {
+
+                        smtpTransport.sendMail(mailOptions, function (err, response) {
+                            console.log("============================================="); 
+                            console.log("smtpTransport:" error || response); 
+                            console.log("============================================="); 
                             if (err)
                                 return reply(Boom.badImplementation(err));
 
