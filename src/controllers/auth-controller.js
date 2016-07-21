@@ -119,6 +119,7 @@ AuthController.prototype = (function () {
                         if (err)
                             return reply(Boom.badImplementation(err));
 
+                        /*
                           var smtpConfig = {
                             host: 'smtp.gmail.com',
                             port: 465,
@@ -131,18 +132,31 @@ AuthController.prototype = (function () {
                           };
 
                         
-                        var smtpTransport = nodemailer.createTransport(smtpConfig);
+                        var smtpTransport = require('nodemailer-smtp-transport');
 
-                        /*
-                        var smtpTransport = nodemailer.createTransport({
+                        var transport = nodemailer.createTransport(smtpTransport({
+                            service: 'gmail',
+                            auth: {
+                                user: 'myemail@gmail.com', // my mail
+                                pass: 'mypassword'
+                            }
+                        }));                        
+
+                        var smtpTransport = nodemailer.createTransport(smtpConfig);
+                        */
+                        
+                        var transport = require('nodemailer-smtp-transport');
+
+
+                        var smtpTransport = nodemailer.createTransport(transport({
                             service: 'Gmail',
                             auth: {
                                 user: config.get('MAIL.USER'),
                                 pass: config.get('MAIL.PASSWORD')
                             }
-                        });
-                        */
+                        }));
                         
+
                     
                         var mailOptions = {
                             to: user.email,
