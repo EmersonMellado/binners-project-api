@@ -130,7 +130,9 @@ AuthController.prototype = (function () {
                             }
                           };
 
+                        
                         var smtpTransport = nodemailer.createTransport(smtpConfig);
+
                         /*
                         var smtpTransport = nodemailer.createTransport({
                             service: 'Gmail',
@@ -140,6 +142,7 @@ AuthController.prototype = (function () {
                             }
                         });
                         */
+                        
                     
                         var mailOptions = {
                             to: user.email,
