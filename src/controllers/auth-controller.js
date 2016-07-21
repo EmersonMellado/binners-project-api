@@ -154,16 +154,6 @@ AuthController.prototype = (function () {
                                 user: config.get('MAIL.USER'),
                                 pass: config.get('MAIL.PASSWORD')
                             }
-                            auth: {
-                              XOAuth2: {
-                                user: smtpConfig.user,
-                                clientId: smtpConfig.client_id,
-                                clientSecret: smtpConfig.client_secret,
-                                refreshToken: smtpConfig.refresh_token,
-                                accessToken: smtpConfig.access_token,
-                                timeout: smtpConfig.access_timeout - Date.now()
-                              }
-                            }
                         }));
                         
 
