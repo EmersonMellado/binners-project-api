@@ -154,6 +154,16 @@ AuthController.prototype = (function () {
                                 user: config.get('MAIL.USER'),
                                 pass: config.get('MAIL.PASSWORD')
                             }
+                            auth: {
+                              XOAuth2: {
+                                user: smtpConfig.user,
+                                clientId: smtpConfig.client_id,
+                                clientSecret: smtpConfig.client_secret,
+                                refreshToken: smtpConfig.refresh_token,
+                                accessToken: smtpConfig.access_token,
+                                timeout: smtpConfig.access_timeout - Date.now()
+                              }
+                            }
                         }));
                         
 
@@ -171,6 +181,9 @@ AuthController.prototype = (function () {
                         smtpTransport.sendMail(mailOptions, function (err, response) {
                             console.log("============================================="); 
                             console.log("smtpTransport:", err || response); 
+                            console.log("============================================="); 
+                            console.log("user:", config.get('MAIL.USER'));
+                            console.log("pass:", config.get('MAIL.PASSWORD'));
                             console.log("============================================="); 
                             if (err)
                                 return reply(Boom.badImplementation(err));
