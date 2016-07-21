@@ -127,9 +127,7 @@ AuthController.prototype = (function () {
                                 pass: config.get('MAIL.PASSWORD')
                             }
                         });
-                        
-                        //var smtpTransport = nodemailer.createTransport('smtps://'+config.get('MAIL.USER')+':'+config.get('MAIL.PASSWORD')+'@smtp.gmail.com');
-                        //
+
                         var mailOptions = {
                             to: user.email,
                             from: config.get('MAIL.FROM'),
