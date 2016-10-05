@@ -65,7 +65,7 @@ AuthController.prototype = (function () {
          * Revalidate an user token.
          */
         revalidate: function (request, reply) {
-            var userId = request.auth.credentials.id;
+            var userId = request.auth.credentials.user;
 
             User.findOne({_id: userId}).then(function (user) {
                 var token = jwt.sign(
