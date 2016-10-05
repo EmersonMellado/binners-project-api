@@ -65,7 +65,7 @@ AuthController.prototype = (function () {
          * Revalidate an user token.
          */
         revalidate: function (request, reply) {
-            var userId = request.auth.credentials.id;
+            var userId = request.auth.credentials.user;
 
             User.findOne({_id: userId}).then(function (user) {
                 var token = jwt.sign(
@@ -101,12 +101,6 @@ AuthController.prototype = (function () {
                     err.output.payload.details = err.data;
                     reply(err);
                 }
-
-                if (!user.name) {
-                    var err = Boom.notFound('', errors.NAME_IS_REQUIRED);
-                    err.output.payload.details = err.data;
-                    reply(err);
-                }                
 
                 user.doHashReset(function (err, token) {
                     if (err)
@@ -147,7 +141,6 @@ AuthController.prototype = (function () {
                         
                         var transport = require('nodemailer-smtp-transport');
 
-
                         var smtpTransport = nodemailer.createTransport(transport({
                             service: 'Gmail',
                             auth: {
@@ -155,8 +148,6 @@ AuthController.prototype = (function () {
                                 pass: config.get('MAIL.PASSWORD')
                             }
                         }));
-                        
-
                     
                         var mailOptions = {
                             to: user.email,

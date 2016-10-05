@@ -13,19 +13,25 @@ function PickupSchema() {
         requester: Joi.string().description('User id that requested the pickup'),
         address: {
             street: Joi.string(),
-            city: Joi.string(),
-            state: Joi.string(),
-            zip: Joi.string(),
+            //TODO: this field is candidate to return 
+            // city: Joi.string(),
+            //TODO: this field is candidate to return 
+            // state: Joi.string(),
+            //TODO: this field is candidate to return 
+            // zip: Joi.string(),
             location: Joi.object({
-                type: Joi.string(),
+                //TODO: this field is candidate to return 
+                // type: Joi.string(),
                 coordinates: Joi.array().items(Joi.number())
             })
         },
         time: Joi.date().description('Date/time to the pickup'),
         instructions: Joi.string().description('Instructions to the binner'),
         items: Joi.array().items(Joi.object({
-            type: Joi.string().valid('can', 'bottle').description('Type of item'),
-            packageSize: Joi.string().valid('small', 'medium', 'large').description('Size classification of the units'),
+            //TODO: this field is candidate to return 
+            // type: Joi.string().valid('can', 'bottle').description('Type of item'),
+            //TODO: this field is candidate to return 
+            // packageSize: Joi.string().valid('small', 'medium', 'large').description('Size classification of the units'),
             quantity: Joi.string().description('Number of packages of this type and size. May be a string.')
         })),
         authorization: Joi.object({
