@@ -102,12 +102,6 @@ AuthController.prototype = (function () {
                     reply(err);
                 }
 
-                if (!user.name) {
-                    var err = Boom.notFound('', errors.NAME_IS_REQUIRED);
-                    err.output.payload.details = err.data;
-                    reply(err);
-                }                
-
                 user.doHashReset(function (err, token) {
                     if (err)
                         return reply(Boom.unauthorized('User not found!'));
@@ -147,7 +141,6 @@ AuthController.prototype = (function () {
                         
                         var transport = require('nodemailer-smtp-transport');
 
-
                         var smtpTransport = nodemailer.createTransport(transport({
                             service: 'Gmail',
                             auth: {
@@ -155,8 +148,6 @@ AuthController.prototype = (function () {
                                 pass: config.get('MAIL.PASSWORD')
                             }
                         }));
-                        
-
                     
                         var mailOptions = {
                             to: user.email,
