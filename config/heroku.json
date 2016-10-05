@@ -5,10 +5,12 @@
     "PORT": 3000,
     "UPLOAD_FOLDER": "../uploads"
   },
+  
   "DATABASE": {
     "URI": "mongodb://binners_dev:P20IE00dH0@ds047085.mongolab.com:47085/binnersproject_dev",
     "SEED": true
   },
+
   "MAIL": {
     "USER": "vanhack.projects@gmail.com",
     "PASSWORD": "v4nh4ckp",
