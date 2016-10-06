@@ -16,7 +16,6 @@ var Boom = require('boom'),
         errors = require('../lib/utilities').getErrorsCode(),
         Promise = require('bluebird'),
         fs = Promise.promisifyAll(require('fs')),
-        moment = require('moment-timezone'),
         inspect = require('eyes').inspector({styles: {all: 'green'}}),
         uuid = require('node-uuid'),
         PickupStatus = require('../lib/utilities').PickupStatus;
