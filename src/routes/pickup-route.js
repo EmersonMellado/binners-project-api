@@ -50,6 +50,71 @@ exports.register = function (server, options, next) {
         }
     });
 
+    server.route({
+        method: 'PATCH',
+        path: '/api/' + version + '/pickups/{_id}/done',
+        config: {
+            handler: controllers.PickupController.done,
+            validate: validators.PickupValidator.done,
+            description: 'Puts a pickup as done, status is set to \'waiting review\'',
+            notes: 'Puts a pickup as done, status is set to \'waiting review\'',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/api/' + version + '/pickups/{_id}/review',
+        config: {
+            handler: controllers.PickupController.review,
+            validate: validators.PickupValidator.review,
+            description: 'Place a review for a pickup and status is set to \'completed\'',
+            notes: 'Place a review for a pickup and status is set to \'completed\'',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/api/' + version + '/pickups/completed',
+        config: {
+            handler: controllers.PickupController.list_completed,
+            validate: validators.PickupValidator.list,
+            description: 'List last 6 months user\'s pickups completed',
+            notes: 'List last 6 months user\'s pickups completed',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/api/' + version + '/pickups/ongoing',
+        config: {
+            handler: controllers.PickupController.list_ongoing,
+            validate: validators.PickupValidator.list,
+            description: 'List last 6 months user\'s pickups on going',
+            notes: 'List last 6 months user\'s pickups on going',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+    
+    server.route({
+        method: 'GET',
+        path: '/api/' + version + '/pickups/waitingreview',
+        config: {
+            handler: controllers.PickupController.list_waiting_review,
+            validate: validators.PickupValidator.list,
+            description: 'List last 6 months user\'s pickups waiting for review',
+            notes: 'List last 6 months user\'s pickups waiting for review',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
     next();
 
 };

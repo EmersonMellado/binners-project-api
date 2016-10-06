@@ -10,6 +10,7 @@ var Joi = require('joi');
  */
 function PickupSchema() {
     this.schema = {
+        _id: Joi.string(),
         requester: Joi.string().description('User id that requested the pickup'),
         address: {
             street: Joi.string(),
@@ -34,6 +35,11 @@ function PickupSchema() {
             // packageSize: Joi.string().valid('small', 'medium', 'large').description('Size classification of the units'),
             quantity: Joi.string().description('Number of packages of this type and size. May be a string.')
         })),
+        status: Joi.string().description('Status of the pickup'),
+        review: {
+            rate: Joi.number().integer().min(1).max(5).description('Rate provided by the requester after pickup is completed.'),
+            comment: Joi.string().description('Comment provided by the requester after pickup is completed.')
+        },
         authorization: Joi.object({
             'Authorization': Joi.string().description('Authorization Token')
         }).unknown()
