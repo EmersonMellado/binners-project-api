@@ -56,8 +56,8 @@ exports.register = function (server, options, next) {
         config: {
             handler: controllers.PickupController.done,
             validate: validators.PickupValidator.done,
-            description: 'Puts a pickup as done, status is set to waiting review',
-            notes: 'Puts a pickup as done, status is set to waiting review',
+            description: 'Puts a pickup as done, status is set to \'waiting review\'',
+            notes: 'Puts a pickup as done, status is set to \'waiting review\'',
             tags: ['api'],
             auth: 'jwt'
         }
@@ -69,8 +69,8 @@ exports.register = function (server, options, next) {
         config: {
             handler: controllers.PickupController.review,
             validate: validators.PickupValidator.review,
-            description: 'Place a review for a pickup',
-            notes: 'Place a review for a pickup',
+            description: 'Place a review for a pickup and status is set to \'completed\'',
+            notes: 'Place a review for a pickup and status is set to \'completed\'',
             tags: ['api'],
             auth: 'jwt'
         }
