@@ -15,11 +15,27 @@ PickupValidator.prototype = (function () {
                 address: schema.address,
                 time: schema.time.required(),
                 instructions: schema.instructions.optional(),
-                items: schema.items.required()
+                items: schema.items.required(),
             },
             headers: schema.authorization.required()
         },
         list: {
+            headers: schema.authorization.required()
+        },
+        done: {
+            params: {
+                _id: schema._id.required()
+            },
+            headers: schema.authorization.required()
+        },
+        review: {
+            payload: {
+                rate: schema.review.rate.required(),
+                comment: schema.review.comment.optional(),
+            },
+            params: {
+                _id: schema._id.required()
+            },
             headers: schema.authorization.required()
         }
     };

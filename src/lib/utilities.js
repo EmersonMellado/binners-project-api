@@ -39,7 +39,19 @@ module.exports = {
 			NAME_IS_REQUIRED: {
 				errorCode: '006',
 				message: 'User Name is required.'
+			},
+			PICKUP_NOT_FOUND: {
+				errorCode: '007',
+				message: 'Pickup not found.'
+			},
+			PICKUP_INVALID_STATUS: {
+				errorCode: '008',
+				message: 'Invalid status changing.'
 			},			
+			INVALID_USER_FOR_REVIEW: {
+				errorCode: '010',
+				message: 'Only the requester can review this pickup.'
+			}			
 		}
 	},
 
@@ -112,6 +124,7 @@ module.exports = {
 		);
 
 		return oauth;
-	})()
-
+	})(),
+	/* XXX: think it could be on the model */
+	PickupStatus : {ON_GOING:'on_going', WAITING_REVIEW:'waiting_review', COMPLETED:'completed'}
 };

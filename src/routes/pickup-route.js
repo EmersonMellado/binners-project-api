@@ -50,6 +50,32 @@ exports.register = function (server, options, next) {
         }
     });
 
+    server.route({
+        method: 'PATCH',
+        path: '/api/' + version + '/pickups/{_id}/done',
+        config: {
+            handler: controllers.PickupController.done,
+            validate: validators.PickupValidator.done,
+            description: 'Puts a pickup as done, status is set to waiting review',
+            notes: 'Puts a pickup as done, status is set to waiting review',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/api/' + version + '/pickups/{_id}/review',
+        config: {
+            handler: controllers.PickupController.review,
+            validate: validators.PickupValidator.review,
+            description: 'Place a review for a pickup',
+            notes: 'Place a review for a pickup',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
     next();
 
 };

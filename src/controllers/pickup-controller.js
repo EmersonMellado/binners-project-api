@@ -18,7 +18,8 @@ var Boom = require('boom'),
         fs = Promise.promisifyAll(require('fs')),
         moment = require('moment-timezone'),
         inspect = require('eyes').inspector({styles: {all: 'green'}}),
-        uuid = require('node-uuid');
+        uuid = require('node-uuid'),
+        PickupStatus = require('../lib/utilities').PickupStatus;
 
 var pickupFolder = config.get("SERVER.UPLOAD_FOLDER") + "/pickups/";
 
@@ -86,8 +87,73 @@ PickupController.prototype = (function () {
                         reply(Boom.badRequest(err));
                     });
 
-        }
+        }, 
+        done: function (request, reply) {
+            Pickup.findById(request.params._id)
+                .then(function(pickup) {
+                    
+                    if (!pickup) {
+                        var err = Boom.notFound('', errors.PICKUP_NOT_FOUND);
+                        err.output.payload.details = err.data;
+                        reply(err);
+                    }
+                    
+                    if (pickup.status != PickupStatus.ON_GOING) {
+                        var err = Boom.badRequest('', errors.PICKUP_INVALID_STATUS);
+                        err.output.payload.details = err.data;
+                        reply(err);
+                    }
 
+                    pickup.status = PickupStatus.WAITING_REVIEW;
+                    pickup.save(function (err) {
+                        if (err) {
+                            return reply(Boom.badImplementation(err));
+                        }
+                        reply(pickup);
+                    });
+                })
+                .catch(function (err) {
+                    reply(Boom.badRequest(err));
+                });
+        },
+        review: function (request, reply) {
+            Pickup.findById(request.params._id)
+                .then(function(pickup) {
+
+                    if (!pickup) {
+                        var err = Boom.notFound('', errors.PICKUP_NOT_FOUND);
+                        err.output.payload.details = err.data;
+                        reply(err);
+                    }
+
+                    var userId = request.auth.credentials.user;
+                    if (userId != pickup.requester) {
+                        var err = Boom.badRequest('', errors.INVALID_USER_FOR_REVIEW);
+                        err.output.payload.details = err.data;
+                        reply(err);
+                    }
+                    
+                    if (pickup.status != PickupStatus.WAITING_REVIEW) {
+                        var err = Boom.badRequest('', errors.PICKUP_INVALID_STATUS);
+                        err.output.payload.details = err.data;
+                        reply(err);
+                    }
+
+                    pickup.status = PickupStatus.COMPLETED;
+                    pickup.review.rate = request.payload.rate 
+                    pickup.review.comment = request.payload.comment 
+
+                    pickup.save(function (err) {
+                        if (err) {
+                            return reply(Boom.badImplementation(err));
+                        }
+                        reply(pickup);
+                    });
+                })
+                .catch(function (err) {
+                    reply(Boom.badRequest(err));
+                });
+        }
     };
 
 })();

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    _ = require('underscore');
+    _ = require('underscore'),
+    PickupStatus = require('../lib/utilities').PickupStatus;
 /**
  * Items subdocument for {@link Pickup}.
  * @type Schema
@@ -52,8 +53,21 @@ var Pickup = new Schema({
     instructions: {
         type: String
     },
-    items: [itemsSchema]
+    items: [itemsSchema],
+    status: {
+        type: String, 
+        default: PickupStatus.ON_GOING
+    },
+    review: {
+        rate: {
+            type: Number
+        },
+        comment: {
+            type: String
+        }   
+    }
 }, {
     timestamps: true
 });
+
 module.exports = mongoose.model('Pickup', Pickup);
