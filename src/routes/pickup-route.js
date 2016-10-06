@@ -76,6 +76,45 @@ exports.register = function (server, options, next) {
         }
     });
 
+    server.route({
+        method: 'GET',
+        path: '/api/' + version + '/pickups/completed',
+        config: {
+            handler: controllers.PickupController.list_completed,
+            validate: validators.PickupValidator.list,
+            description: 'List last 6 months user\'s pickups completed',
+            notes: 'List last 6 months user\'s pickups completed',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/api/' + version + '/pickups/ongoing',
+        config: {
+            handler: controllers.PickupController.list_ongoing,
+            validate: validators.PickupValidator.list,
+            description: 'List last 6 months user\'s pickups on going',
+            notes: 'List last 6 months user\'s pickups on going',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+    
+    server.route({
+        method: 'GET',
+        path: '/api/' + version + '/pickups/waitingreview',
+        config: {
+            handler: controllers.PickupController.list_waiting_review,
+            validate: validators.PickupValidator.list,
+            description: 'List last 6 months user\'s pickups waiting for review',
+            notes: 'List last 6 months user\'s pickups waiting for review',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
     next();
 
 };

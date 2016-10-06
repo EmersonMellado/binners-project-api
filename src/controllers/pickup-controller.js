@@ -56,11 +56,9 @@ PickupController.prototype = (function () {
 
         },
         list: function (request, reply) {
-            var curDate = moment().tz('America/Vancouver');
-            var last6Month = curDate.clone().subtract(6, 'months');
             var userId = request.auth.credentials.user;
-
-            Pickup.find({requester: userId, time: {"$gte": last6Month}}).exec()
+            Pickup.filter(userId)
+                    .exec()
                     .then(function (pickups) {
                         reply(pickups);
                     });
@@ -153,6 +151,30 @@ PickupController.prototype = (function () {
                 .catch(function (err) {
                     reply(Boom.badRequest(err));
                 });
+        },
+        list_ongoing: function (request, reply) {
+            var userId = request.auth.credentials.user;
+            Pickup.filter(userId, PickupStatus.ON_GOING)
+                    .exec()
+                    .then(function (pickups) {
+                        reply(pickups);
+                    });
+        },
+        list_completed: function (request, reply) {
+            var userId = request.auth.credentials.user;
+            Pickup.filter(userId, PickupStatus.COMPLETED)
+                    .exec()
+                    .then(function (pickups) {
+                        reply(pickups);
+                    });
+        },
+        list_waiting_review: function (request, reply) {
+            var userId = request.auth.credentials.user;
+            Pickup.filter(userId, PickupStatus.WAITING_REVIEW)
+                    .exec()
+                    .then(function (pickups) {
+                        reply(pickups);
+                    });
         }
     };
 
