@@ -21,19 +21,6 @@ exports.register = function (server, options, next) {
     });
 
     server.route({
-        method: 'GET',
-        path: '/api/' + version + '/pickups',
-        config: {
-            handler: controllers.PickupController.list,
-            validate: validators.PickupValidator.list,
-            description: 'List last 6 months user\'s pickups',
-            notes: 'List last 6 months user\'s pickups',
-            tags: ['api'],
-            auth: 'jwt'
-        }
-    });
-
-    server.route({
         method: 'POST',
         path: '/api/' + version + '/pickups/{_id}/photos',
         config: {
@@ -78,9 +65,22 @@ exports.register = function (server, options, next) {
 
     server.route({
         method: 'GET',
+        path: '/api/' + version + '/pickups',
+        config: {
+            handler: controllers.PickupController.list,
+            validate: validators.PickupValidator.list,
+            description: 'List last 6 months user\'s pickups',
+            notes: 'List last 6 months user\'s pickups',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
+    server.route({
+        method: 'GET',
         path: '/api/' + version + '/pickups/completed',
         config: {
-            handler: controllers.PickupController.list_completed,
+            handler: controllers.PickupController.list,
             validate: validators.PickupValidator.list,
             description: 'List last 6 months user\'s pickups completed',
             notes: 'List last 6 months user\'s pickups completed',
@@ -93,7 +93,7 @@ exports.register = function (server, options, next) {
         method: 'GET',
         path: '/api/' + version + '/pickups/ongoing',
         config: {
-            handler: controllers.PickupController.list_ongoing,
+            handler: controllers.PickupController.list,
             validate: validators.PickupValidator.list,
             description: 'List last 6 months user\'s pickups on going',
             notes: 'List last 6 months user\'s pickups on going',
@@ -106,7 +106,7 @@ exports.register = function (server, options, next) {
         method: 'GET',
         path: '/api/' + version + '/pickups/waitingreview',
         config: {
-            handler: controllers.PickupController.list_waiting_review,
+            handler: controllers.PickupController.list,
             validate: validators.PickupValidator.list,
             description: 'List last 6 months user\'s pickups waiting for review',
             notes: 'List last 6 months user\'s pickups waiting for review',

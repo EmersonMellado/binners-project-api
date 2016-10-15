@@ -54,14 +54,6 @@ PickupController.prototype = (function () {
             });
 
         },
-        list: function (request, reply) {
-            var userId = request.auth.credentials.user;
-            Pickup.filter(userId)
-                    .exec()
-                    .then(function (pickups) {
-                        reply(pickups);
-                    });
-        },
         photoUpload: function (request, reply) {
             var userId = request.auth.credentials.user;
 
@@ -151,30 +143,17 @@ PickupController.prototype = (function () {
                     reply(Boom.badRequest(err));
                 });
         },
-        list_ongoing: function (request, reply) {
+        list: function (request, reply) {
             var userId = request.auth.credentials.user;
-            Pickup.filter(userId, PickupStatus.ON_GOING)
+            var path = request.path;
+            var segments = path.split("/");
+            var lastSegment = segments[segments.length-1];
+            Pickup.filter(userId, resolveStatusFromRequest(lastSegment))
                     .exec()
                     .then(function (pickups) {
                         reply(pickups);
                     });
         },
-        list_completed: function (request, reply) {
-            var userId = request.auth.credentials.user;
-            Pickup.filter(userId, PickupStatus.COMPLETED)
-                    .exec()
-                    .then(function (pickups) {
-                        reply(pickups);
-                    });
-        },
-        list_waiting_review: function (request, reply) {
-            var userId = request.auth.credentials.user;
-            Pickup.filter(userId, PickupStatus.WAITING_REVIEW)
-                    .exec()
-                    .then(function (pickups) {
-                        reply(pickups);
-                    });
-        }
     };
 
 })();
@@ -218,5 +197,16 @@ var uploadFile = function (data) {
         });
     });
 };
+
+/**
+ * This function is a mapping from the value 
+ * provided on the HTTP request to domain 
+ * value
+ */
+var resolveStatusFromRequest = function(statusFromRequest) {
+ return {ongoing:       PickupStatus.ON_GOING, 
+         waitingreview: PickupStatus.WAITING_REVIEW, 
+         completed:     PickupStatus.COMPLETED}[statusFromRequest]
+}
 
 module.exports = new PickupController();
