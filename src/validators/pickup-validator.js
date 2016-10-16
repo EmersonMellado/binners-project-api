@@ -22,7 +22,7 @@ PickupValidator.prototype = (function () {
         list: {
             headers: schema.authorization.required()
         },
-        done: {
+        changeStatus: {
             params: {
                 _id: schema._id.required()
             },

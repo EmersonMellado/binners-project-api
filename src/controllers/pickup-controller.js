@@ -79,28 +79,14 @@ PickupController.prototype = (function () {
         }, 
         done: function (request, reply) {
             Pickup.findById(request.params._id)
-                .then(function(pickup) {
-                    
-                    if (!pickup) {
-                        var err = Boom.notFound('', errors.PICKUP_NOT_FOUND);
-                        err.output.payload.details = err.data;
-                        reply(err);
-                    }
-                    
-                    if (pickup.status != PickupStatus.ON_GOING) {
-                        var err = Boom.badRequest('', errors.PICKUP_INVALID_STATUS);
-                        err.output.payload.details = err.data;
-                        reply(err);
-                    }
-
-                    pickup.status = PickupStatus.WAITING_REVIEW;
-                    pickup.save(function (err) {
-                        if (err) {
-                            return reply(Boom.badImplementation(err));
-                        }
-                        reply(pickup);
-                    });
-                })
+                .then(changeStatus(PickupStatus.WAITING_REVIEW, request, reply))
+                .catch(function (err) {
+                    reply(Boom.badRequest(err));
+                });
+        },
+        canceled: function (request, reply) {
+            Pickup.findById(request.params._id)
+                .then(changeStatus(PickupStatus.CANCELED, request, reply))
                 .catch(function (err) {
                     reply(Boom.badRequest(err));
                 });
@@ -207,6 +193,31 @@ var resolveStatusFromRequest = function(statusFromRequest) {
  return {ongoing:       PickupStatus.ON_GOING, 
          waitingreview: PickupStatus.WAITING_REVIEW, 
          completed:     PickupStatus.COMPLETED}[statusFromRequest]
+}
+
+var changeStatus = function(status, request, reply) {
+    return function(pickup) {
+                    
+            if (!pickup) {
+                var err = Boom.notFound('', errors.PICKUP_NOT_FOUND);
+                err.output.payload.details = err.data;
+                reply(err);
+            }
+            
+            if (pickup.status != PickupStatus.ON_GOING) {
+                var err = Boom.badRequest('', errors.PICKUP_INVALID_STATUS);
+                err.output.payload.details = err.data;
+                reply(err);
+            }
+
+            pickup.status = status;
+            pickup.save(function (err) {
+                if (err) {
+                    return reply(Boom.badImplementation(err));
+                }
+                reply(pickup);
+            });
+        }
 }
 
 module.exports = new PickupController();

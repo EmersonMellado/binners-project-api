@@ -42,9 +42,22 @@ exports.register = function (server, options, next) {
         path: '/api/' + version + '/pickups/{_id}/done',
         config: {
             handler: controllers.PickupController.done,
-            validate: validators.PickupValidator.done,
+            validate: validators.PickupValidator.changeStatus,
             description: 'Puts a pickup as done, status is set to \'waiting review\'',
             notes: 'Puts a pickup as done, status is set to \'waiting review\'',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
+    server.route({
+        method: 'PATCH',
+        path: '/api/' + version + '/pickups/{_id}/canceled',
+        config: {
+            handler: controllers.PickupController.canceled,
+            validate: validators.PickupValidator.changeStatus,
+            description: 'Puts a pickup as canceled, status is set to \'canceled\'',
+            notes: 'Puts a pickup as canceled, status is set to \'canceled\'',
             tags: ['api'],
             auth: 'jwt'
         }
