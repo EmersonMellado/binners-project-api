@@ -23,6 +23,8 @@ PickupValidator.prototype = (function () {
             payload: {
                 address: schema.address,
                 time: schema.time.optional(),
+            },params: {
+                _id: schema._id.required()
             },
             headers: schema.authorization.required()
         },
