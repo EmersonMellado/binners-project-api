@@ -20,6 +20,19 @@ exports.register = function (server, options, next) {
         }
     });
 
+	server.route({
+		method: 'PUT', 
+		path: '/api/' + version + '/pickups/{_id}',
+		config: {
+			handler: controllers.PickupController.update,
+			validate: validators.PickupValidator.update,
+			description: 'Update some pickup by id',
+			notes: 'Updating pickup',
+			tags: ['api'],
+			auth: 'jwt'
+		}
+	});
+
     server.route({
         method: 'POST',
         path: '/api/' + version + '/pickups/{_id}/photos',

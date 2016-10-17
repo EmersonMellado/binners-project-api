@@ -143,6 +143,26 @@ PickupController.prototype = (function () {
                         reply(pickups);
                     });
         },
+        update: function (request, reply) {
+            Pickup.findByIdAndUpdate(request.params._id, request.payload)
+            .exec()
+            .then(
+                function (pickup) {
+                    if (pickup)
+                        Pickup.findById(pickup.id)
+                        .exec()
+                        .then(function (updatedPickup) {
+                            reply(updatedPickup);
+                        });
+                    else {
+                        reply(Boom.notFound('User not found.'))
+                    }
+                },
+                function (error) {
+                    reply(Boom.badData(error.message));
+                }
+            );
+        },
     };
 
 })();
