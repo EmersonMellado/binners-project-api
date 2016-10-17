@@ -20,6 +20,9 @@ PickupValidator.prototype = (function () {
             headers: schema.authorization.required()
         },
         list: {
+            query: {
+                limit: Joi.number().integer().optional().description('Limit total of items returned - Default: 30').example(10),
+            },
             headers: schema.authorization.required()
         },
         changeStatus: {

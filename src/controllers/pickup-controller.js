@@ -131,10 +131,13 @@ PickupController.prototype = (function () {
         },
         list: function (request, reply) {
             var userId = request.auth.credentials.user;
+            var limit = request.query['limit'] || 30;
             var path = request.path;
             var segments = path.split("/");
             var lastSegment = segments[segments.length-1];
-            Pickup.filter(userId, resolveStatusFromRequest(lastSegment))
+            Pickup.filterByStatus(userId, resolveStatusFromRequest(lastSegment))
+                    .limit(limit)
+                    .sort({createdAt: 'desc'})
                     .exec()
                     .then(function (pickups) {
                         reply(pickups);
