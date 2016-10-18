@@ -19,10 +19,22 @@ PickupValidator.prototype = (function () {
             },
             headers: schema.authorization.required()
         },
-        list: {
+        update: {
+            payload: {
+                address: schema.address,
+                time: schema.time.optional(),
+            },params: {
+                _id: schema._id.required()
+            },
             headers: schema.authorization.required()
         },
-        done: {
+        list: {
+            query: {
+                limit: Joi.number().integer().optional().description('Limit total of items returned - Default: 30').example(10),
+            },
+            headers: schema.authorization.required()
+        },
+        changeStatus: {
             params: {
                 _id: schema._id.required()
             },

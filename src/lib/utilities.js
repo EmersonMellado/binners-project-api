@@ -126,5 +126,5 @@ module.exports = {
 		return oauth;
 	})(),
 	/* XXX: think it could be on the model */
-	PickupStatus : {ON_GOING:'on_going', WAITING_REVIEW:'waiting_review', COMPLETED:'completed'}
+	PickupStatus : {ON_GOING:'on_going', WAITING_REVIEW:'waiting_review', COMPLETED:'completed', CANCELED:'canceled'}
 };

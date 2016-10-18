@@ -54,14 +54,6 @@ PickupController.prototype = (function () {
             });
 
         },
-        list: function (request, reply) {
-            var userId = request.auth.credentials.user;
-            Pickup.filter(userId)
-                    .exec()
-                    .then(function (pickups) {
-                        reply(pickups);
-                    });
-        },
         photoUpload: function (request, reply) {
             var userId = request.auth.credentials.user;
 
@@ -87,28 +79,14 @@ PickupController.prototype = (function () {
         }, 
         done: function (request, reply) {
             Pickup.findById(request.params._id)
-                .then(function(pickup) {
-                    
-                    if (!pickup) {
-                        var err = Boom.notFound('', errors.PICKUP_NOT_FOUND);
-                        err.output.payload.details = err.data;
-                        reply(err);
-                    }
-                    
-                    if (pickup.status != PickupStatus.ON_GOING) {
-                        var err = Boom.badRequest('', errors.PICKUP_INVALID_STATUS);
-                        err.output.payload.details = err.data;
-                        reply(err);
-                    }
-
-                    pickup.status = PickupStatus.WAITING_REVIEW;
-                    pickup.save(function (err) {
-                        if (err) {
-                            return reply(Boom.badImplementation(err));
-                        }
-                        reply(pickup);
-                    });
-                })
+                .then(changeStatus(PickupStatus.WAITING_REVIEW, request, reply))
+                .catch(function (err) {
+                    reply(Boom.badRequest(err));
+                });
+        },
+        canceled: function (request, reply) {
+            Pickup.findById(request.params._id)
+                .then(changeStatus(PickupStatus.CANCELED, request, reply))
                 .catch(function (err) {
                     reply(Boom.badRequest(err));
                 });
@@ -151,30 +129,40 @@ PickupController.prototype = (function () {
                     reply(Boom.badRequest(err));
                 });
         },
-        list_ongoing: function (request, reply) {
+        list: function (request, reply) {
             var userId = request.auth.credentials.user;
-            Pickup.filter(userId, PickupStatus.ON_GOING)
+            var limit = request.query['limit'] || 30;
+            var path = request.path;
+            var segments = path.split("/");
+            var lastSegment = segments[segments.length-1];
+            Pickup.filterByStatus(userId, resolveStatusFromRequest(lastSegment))
+                    .limit(limit)
+                    .sort({createdAt: 'desc'})
                     .exec()
                     .then(function (pickups) {
                         reply(pickups);
                     });
         },
-        list_completed: function (request, reply) {
-            var userId = request.auth.credentials.user;
-            Pickup.filter(userId, PickupStatus.COMPLETED)
-                    .exec()
-                    .then(function (pickups) {
-                        reply(pickups);
-                    });
+        update: function (request, reply) {
+            Pickup.findByIdAndUpdate(request.params._id, request.payload)
+            .exec()
+            .then(
+                function (pickup) {
+                    if (pickup)
+                        Pickup.findById(pickup.id)
+                        .exec()
+                        .then(function (updatedPickup) {
+                            reply(updatedPickup);
+                        });
+                    else {
+                        reply(Boom.notFound('User not found.'))
+                    }
+                },
+                function (error) {
+                    reply(Boom.badData(error.message));
+                }
+            );
         },
-        list_waiting_review: function (request, reply) {
-            var userId = request.auth.credentials.user;
-            Pickup.filter(userId, PickupStatus.WAITING_REVIEW)
-                    .exec()
-                    .then(function (pickups) {
-                        reply(pickups);
-                    });
-        }
     };
 
 })();
@@ -218,5 +206,41 @@ var uploadFile = function (data) {
         });
     });
 };
+
+/**
+ * This function is a mapping from the value 
+ * provided on the HTTP request to domain 
+ * value
+ */
+var resolveStatusFromRequest = function(statusFromRequest) {
+ return {ongoing:       PickupStatus.ON_GOING, 
+         waitingreview: PickupStatus.WAITING_REVIEW, 
+         completed:     PickupStatus.COMPLETED}[statusFromRequest]
+}
+
+var changeStatus = function(status, request, reply) {
+    return function(pickup) {
+                    
+            if (!pickup) {
+                var err = Boom.notFound('', errors.PICKUP_NOT_FOUND);
+                err.output.payload.details = err.data;
+                reply(err);
+            }
+            
+            if (pickup.status != PickupStatus.ON_GOING) {
+                var err = Boom.badRequest('', errors.PICKUP_INVALID_STATUS);
+                err.output.payload.details = err.data;
+                reply(err);
+            }
+
+            pickup.status = status;
+            pickup.save(function (err) {
+                if (err) {
+                    return reply(Boom.badImplementation(err));
+                }
+                reply(pickup);
+            });
+        }
+}
 
 module.exports = new PickupController();

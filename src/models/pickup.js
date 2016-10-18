@@ -71,7 +71,7 @@ var Pickup = new Schema({
     timestamps: true
 });
 
-Pickup.statics.filter = function(userId, status=null) {
+Pickup.statics.filterByStatus = function(userId, status=null) {
     var curDate = moment().tz('America/Vancouver');
     var last6Month = curDate.clone().subtract(6, 'months');
     var filter = {requester: userId, time: {"$gte": last6Month}};
