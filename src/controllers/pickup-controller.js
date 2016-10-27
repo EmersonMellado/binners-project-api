@@ -135,7 +135,20 @@ PickupController.prototype = (function () {
             var path = request.path;
             var segments = path.split("/");
             var lastSegment = segments[segments.length-1];
-            Pickup.filterByStatus(userId, resolveStatusFromRequest(lastSegment))
+            console.log(request.query['status']);
+            Pickup.filterByStatus(userId, [resolveStatusFromRequest(lastSegment)])
+                    .limit(limit)
+                    .sort({createdAt: 'desc'})
+                    .exec()
+                    .then(function (pickups) {
+                        reply(pickups);
+                    });
+        },
+        tracking: function (request, reply) {
+            var userId = request.auth.credentials.user;
+            var limit = request.query['limit'] || 30;
+            var statuses = request.query['status'] || [];
+            Pickup.filterByStatus(userId, statuses.map(resolveStatusFromRequest))
                     .limit(limit)
                     .sort({createdAt: 'desc'})
                     .exec()
@@ -215,7 +228,9 @@ var uploadFile = function (data) {
 var resolveStatusFromRequest = function(statusFromRequest) {
  return {ongoing:       PickupStatus.ON_GOING, 
          waitingreview: PickupStatus.WAITING_REVIEW, 
-         completed:     PickupStatus.COMPLETED}[statusFromRequest]
+         completed:     PickupStatus.COMPLETED,
+         canceled: PickupStatus.CANCELED,
+        }[statusFromRequest]
 }
 
 var changeStatus = function(status, request, reply) {

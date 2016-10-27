@@ -141,6 +141,19 @@ exports.register = function (server, options, next) {
         }
     });
 
+    server.route({
+        method: 'GET',
+        path: '/api/' + version + '/pickups/status-tracking',
+        config: {
+            handler: controllers.PickupController.tracking,
+            validate: validators.PickupValidator.tracking,
+            description: 'Filter pickups by status ordered by date',
+            notes: 'Filter pickups by status ordered by date',
+            tags: ['api'],
+            auth: 'jwt'
+        }
+    });
+
     next();
 
 };
