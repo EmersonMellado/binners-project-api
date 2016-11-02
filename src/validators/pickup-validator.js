@@ -30,7 +30,22 @@ PickupValidator.prototype = (function () {
         },
         list: {
             query: {
-                limit: Joi.number().integer().optional().description('Limit total of items returned - Default: 30').example(10),
+                limit: Joi.number().integer().optional()
+                                   .description('Limit total of items returned - Default: 30')
+                                   .example(10),                
+            },
+            headers: schema.authorization.required()
+        },
+        tracking: {
+            query: {
+                limit: Joi.number().integer().optional()
+                                   .description('Limit total of items returned - Default: 30')
+                                   .example(10),
+                status: Joi.array().items(Joi.string().optional()).optional()
+                                   .description('Filter by status. Values allowed: ongoing,'+ 
+                                                'waitingreview, completed, canceled.'+ 
+                                                'Example: /pickups/status-tracking?status='+
+                                                'ongoing&status=waitingreview'),
             },
             headers: schema.authorization.required()
         },

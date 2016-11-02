@@ -71,12 +71,12 @@ var Pickup = new Schema({
     timestamps: true
 });
 
-Pickup.statics.filterByStatus = function(userId, status=null) {
+Pickup.statics.filterByStatus = function(userId, statuses=null) {
     var curDate = moment().tz('America/Vancouver');
     var last6Month = curDate.clone().subtract(6, 'months');
     var filter = {requester: userId, time: {"$gte": last6Month}};
-    if(status) {
-        filter.status = status;
+    if(statuses) {
+        filter.status = {"$in": statuses};
     }
     return this.find(filter);
 }
